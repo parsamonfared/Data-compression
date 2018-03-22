@@ -70,13 +70,9 @@ def make_freq_dict(text):
 
     for item in text:
         if not item in freq_dict:
-
             freq_dict[item] = 1
-            
         else:
-
             freq_dict[item] = freq_dict[item] + 1
-            
     return freq_dict
             
     
@@ -106,15 +102,17 @@ def huffman_tree(freq_dict):
         tree.right = node
         return tree
     temp = tree
-    # to be fixed
-    while len(l) > 1:
 
-        right_node , left_node = l.pop(), l.pop()
-        tree.right =  HuffmanNode(right_node)
-        tree.left = HuffmanNode(left_node)
-        tree = tree.righ
-        
-    return temp
+    while len(l) > 1:
+        if len(l) == 2:
+            temp.left = HuffmanNode(l.pop())
+            temp.right = HuffmanNode(l.pop())
+            temp = temp.right
+        else:
+            temp.left = HuffmanNode(l.pop())
+            temp.right = HuffmanNode()
+            temp = temp.right  
+    return tree
         
         
 

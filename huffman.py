@@ -66,7 +66,20 @@ def make_freq_dict(text):
     >>> d == {65: 1, 66: 2, 67: 1}
     True
     """
-    # todo
+    freq_dict = {}
+
+    for item in text:
+        if not item in freq_dict:
+
+            freq_dict[item] = 1
+            
+        else:
+
+            freq_dict[item] = freq_dict[item] + 1
+            
+    return freq_dict
+            
+    
 
 
 def huffman_tree(freq_dict):
@@ -83,7 +96,45 @@ def huffman_tree(freq_dict):
     >>> t == result1 or t == result2
     True
     """
-    # todo
+    l = sorted(freq_dict, key = freq_dict.__getitem__)
+    tree = HuffmanNode()
+    if len(l) == 1:
+        
+        node = HuffmanNode(l.pop())
+        tree.left = node
+        tree.right = node
+        return tree
+    temp = tree
+    while len(l) > 1:
+
+        right_node , left_node = l.pop(0), l.pop(0)
+        tree.right =  HuffmanNode(right_node)
+        tree.left = HuffmanNode(left_node)
+        tree = tree.left
+    return temp
+        
+        
+
+        
+'''
+    else:
+        
+        left_node = HuffmanNode(l[0])
+        right_node = HuffmanNode(l[1])
+        
+        return HuffmanNode(None, left_node, right_node)
+'''    
+
+        
+        
+
+        
+
+        
+        
+
+    
+        
 
 
 def get_codes(tree):

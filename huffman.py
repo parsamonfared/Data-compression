@@ -117,8 +117,7 @@ def huffman_tree(freq_dict):
 
         
 '''
-    else:
-        
+    else: 
         left_node = HuffmanNode(l[0])
         right_node = HuffmanNode(l[1])
         

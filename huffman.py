@@ -137,19 +137,35 @@ def get_codes(tree):
     >>> d == {3: "0", 2: "1"}
     True
     """
-    if tree == None:
-        
+    return get_binary(tree, '', {})
+    
+def get_binary(tree, code, d = {}):
+    
+    if tree == None:        
         return {}
-    
-    elif tree.left == tree.right:
         
-        return {tree.right.symbol:"1"}
+    elif tree.left == tree.right and tree.left != None:     
+        return {tree.symbol: '1'}
     
-    code = ""
+    if tree.left != None:
+        get_binary(tree.left, code + '0', d)
+        
+    if tree.right != None:
+        get_binary(tree.right, code + '1', d)
+        
+    if tree.is_leaf():
+        d[tree.symbol] = code
     
-    while tree.right != None and tree.left != None:
+    return d
+    '''    
+    elif tree.left and tree.right: #Both exist
+        l.append(get_binary(tree.left, code + "0"))
+        l.append(get_binary(tree.right, code + "1"))
+    elif tree.left and not tree.right:
+    '''   
+        
+      
 
-        pass
 
 def number_nodes(tree):
     """ Number internal nodes in tree according to postorder traversal;

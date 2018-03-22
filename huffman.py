@@ -185,9 +185,21 @@ def number_nodes(tree):
     >>> tree.number
     2
     """
-    # todo
+   # what!!
+    def numbering(tree,num = 0):
 
+        if tree.left != None:
+            num += 1
+            numbering(tree.left, num)
+            
+        if tree.right != None:
+            num += 1
+            numbering(tree.right, num)
+        
+        tree.number = num
 
+    numbering(tree)
+    
 def avg_length(tree, freq_dict):
     """ Return the number of bits per symbol required to compress text
     made of the symbols and frequencies in freq_dict, using the Huffman tree.
@@ -203,9 +215,17 @@ def avg_length(tree, freq_dict):
     >>> avg_length(tree, freq)
     1.9
     """
-    # todo
-
-
+    d = get_codes(tree)
+    freq_num = 0
+    binary_num_sizes = 0
+    
+    for key in d:
+        freq_num += freq_dict[key]
+        binary_num_sizes += (len(d[key])* freq_dict[key])
+    
+    return binary_num_sizes/freq_num
+    
+        
 def generate_compressed(text, codes):
     """ Return compressed form of text, using mapping in codes for each symbol.
 
@@ -223,7 +243,29 @@ def generate_compressed(text, codes):
     >>> [byte_to_bits(byte) for byte in result]
     ['10111001', '10000000']
     """
-    # todo
+    bits = ''
+    for item in text:
+        bits += d[item]
+        
+    byte = []
+    if len(bits) <= 8 :
+        
+        byte.append(bits_to_byte(bits))
+        return byte
+    
+    while len(bits) > 8:
+
+        temp_bits = bits[:8]
+        bits = bits[8:]
+        byte.append(bits_to_byte(temp_bits))
+    if len(bits) != 0:
+
+        byte.append(bits_to_byte(bits))
+    return byte
+    
+    
+        
+    
 
 
 def tree_to_bytes(tree):

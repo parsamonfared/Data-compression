@@ -76,8 +76,6 @@ def make_freq_dict(text):
     return freq_dict
             
     
-
-
 def huffman_tree(freq_dict):
     """ Return the root HuffmanNode of a Huffman tree corresponding
     to frequency dictionary freq_dict.
@@ -93,38 +91,21 @@ def huffman_tree(freq_dict):
     True
     """
     # sorted the dictionary keys to list l in terms of it's key's values
-    l = sorted(freq_dict, key = freq_dict.__getitem__)
-    tree = HuffmanNode()
-    if len(l) == 1:
-        
-        node = HuffmanNode(l.pop())
-        tree.left = node
-        tree.right = node
-        return tree
-    temp = tree
+    temp = [] #[0] = Frequency, [1] = HuffmanNode w/ Symbol
+    for key in freq_dict:
+        temp.append([freq_dict[key], HuffmanNode(key)])
 
-    while len(l) > 1:
-        if len(l) == 2:
-            temp.left = HuffmanNode(l.pop())
-            temp.right = HuffmanNode(l.pop())
-            temp = temp.right
-        else:
-            temp.left = HuffmanNode(l.pop())
-            temp.right = HuffmanNode()
-            temp = temp.right  
-    return tree
-        
-        
-
-        
-'''
-    else: 
-        left_node = HuffmanNode(l[0])
-        right_node = HuffmanNode(l[1])
-        
-        return HuffmanNode(None, left_node, right_node)
-'''    
-
+   
+    if len(temp) == 1:
+        return HuffmanNode(temp.popitem()[0])
+    
+    while len(temp) > 1:
+        temp = sorted(temp) #List of all of frequencies in the dictionary
+        left = temp.pop(0)
+        right = temp.pop(0)
+        temp.append([left[0] + right[0], HuffmanNode(left = left[1], right = right[1])])
+    return temp[0][1] #Returns the root node of the Huffman tree (all others have been combined)
+                
 
 def get_codes(tree):
     """ Return a dict mapping symbols from Huffman tree to codes.
@@ -157,15 +138,6 @@ def get_binary(tree, code, d = {}):
         d[tree.symbol] = code
     
     return d
-    '''    
-    elif tree.left and tree.right: #Both exist
-        l.append(get_binary(tree.left, code + "0"))
-        l.append(get_binary(tree.right, code + "1"))
-    elif tree.left and not tree.right:
-    '''   
-        
-      
-
 
 def number_nodes(tree):
     """ Number internal nodes in tree according to postorder traversal;
@@ -185,20 +157,20 @@ def number_nodes(tree):
     >>> tree.number
     2
     """
-   # what!!
-    def numbering(tree,num = 0):
-
-        if tree.left != None:
-            num += 1
-            numbering(tree.left, num)
-            
-        if tree.right != None:
-            num += 1
-            numbering(tree.right, num)
+    do_number_nodes(tree, [0])
+    
+def do_number_nodes(tree, cur_number):
+    
+    if tree.left != None: #Left exists
+        do_number_nodes(tree.left, cur_number)
+    
+    if tree.right != None: #Right exists
+        do_number_nodes(tree.right, cur_number)
         
-        tree.number = num
-
-    numbering(tree)
+    if not tree.is_leaf(): #Ignores leaves
+        tree.number = cur_number[0]
+        cur_number[0] += 1
+        return    
     
 def avg_length(tree, freq_dict):
     """ Return the number of bits per symbol required to compress text

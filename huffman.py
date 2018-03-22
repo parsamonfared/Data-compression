@@ -96,6 +96,7 @@ def huffman_tree(freq_dict):
     >>> t == result1 or t == result2
     True
     """
+    # sorted the dictionary keys to list l in terms of it's key's values
     l = sorted(freq_dict, key = freq_dict.__getitem__)
     tree = HuffmanNode()
     if len(l) == 1:
@@ -105,12 +106,14 @@ def huffman_tree(freq_dict):
         tree.right = node
         return tree
     temp = tree
+    # to be fixed
     while len(l) > 1:
 
-        right_node , left_node = l.pop(0), l.pop(0)
+        right_node , left_node = l.pop(), l.pop()
         tree.right =  HuffmanNode(right_node)
         tree.left = HuffmanNode(left_node)
-        tree = tree.left
+        tree = tree.righ
+        
     return temp
         
         
@@ -125,17 +128,6 @@ def huffman_tree(freq_dict):
         return HuffmanNode(None, left_node, right_node)
 '''    
 
-        
-        
-
-        
-
-        
-        
-
-    
-        
-
 
 def get_codes(tree):
     """ Return a dict mapping symbols from Huffman tree to codes.
@@ -148,8 +140,19 @@ def get_codes(tree):
     >>> d == {3: "0", 2: "1"}
     True
     """
-    # todo
+    if tree == None:
+        
+        return {}
+    
+    elif tree.left == tree.right:
+        
+        return {tree.right.symbol:"1"}
+    
+    code = ""
+    
+    while tree.right != None and tree.left != None:
 
+        pass
 
 def number_nodes(tree):
     """ Number internal nodes in tree according to postorder traversal;

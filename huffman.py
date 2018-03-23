@@ -321,14 +321,9 @@ def compress(in_file, out_file):
     tree = huffman_tree(freq)
     codes = get_codes(tree)
     number_nodes(tree)
-    print(tree)
-    print(freq)
-    print("Bits per symbol:", avg_length(tree, freq))
     result = (num_nodes_to_bytes(tree) + tree_to_bytes(tree) +
               size_to_bytes(len(text)))
-    print('Tree to bytes problem')
     result += generate_compressed(text, codes)
-    print('Generate_compressed problem')
     with open(out_file, "wb") as f2:
         f2.write(result)
 

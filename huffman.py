@@ -261,8 +261,24 @@ def tree_to_bytes(tree):
     >>> list(tree_to_bytes(tree))
     [0, 3, 0, 2, 1, 0, 0, 5]
     """
-    # todo
-
+    # to fix
+    if tree.left.is_leaf():
+        first_byte = 0
+        second_byte = tree.left.symbol
+        
+    else:
+        first_byte = 1
+        second_byte = tree.left.number
+        
+    if tree.right.is_leaf():
+        third_byte = 0
+        forth_byte = tree.right.symbol
+        
+    else:
+        third_byte = 1
+        forth_byte = tree.right.number
+        
+    return bytes([first_byte ,second_byte ,third_byte ,forth_byte])
 
 def num_nodes_to_bytes(tree):
     """ Return number of nodes required to represent tree (the root of a

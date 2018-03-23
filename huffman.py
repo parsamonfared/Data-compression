@@ -217,7 +217,7 @@ def generate_compressed(text, codes):
     """
     bits = ''
     for item in text:
-        bits += d[item]
+        bits += codes[item]
         
     byte = []
     if len(bits) <= 8 :

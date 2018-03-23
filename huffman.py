@@ -350,7 +350,23 @@ def generate_tree_general(node_lst, root_index):
 HuffmanNode(12, None, None)), \
 HuffmanNode(None, HuffmanNode(5, None, None), HuffmanNode(7, None, None)))
     """
-    # todo
+    
+    def make_tree(root, tree):
+        if root.l_type == 0: #Left is a leaf
+            tree.left = HuffmanNode(root.l_data)
+        if root.r_type == 0: #Right is a leaf
+            tree.right = HuffmanNode(root.r_data)
+        if root.l_type == 1: #Left is a parent
+            tree.left = HuffmanNode()
+            make_tree(node_lst[root.l_data], tree.left)
+        if root.r_type == 1: #Right is a parent
+            tree.right = HuffmanNode()
+            make_tree(node_lst[root.r_data], tree.right)
+        
+    root = node_lst[root_index]
+    node = HuffmanNode()        
+    make_tree(root, node)
+    return node
 
 
 def generate_tree_postorder(node_lst, root_index):
@@ -381,7 +397,7 @@ def generate_uncompressed(tree, text, size):
     @param int size: number of bytes to decompress from text.
     @rtype: bytes
     """
-    # todo
+    
 
 
 def bytes_to_nodes(buf):

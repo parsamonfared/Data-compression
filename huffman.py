@@ -261,28 +261,33 @@ def tree_to_bytes(tree):
     >>> list(tree_to_bytes(tree))
     [0, 3, 0, 2, 1, 0, 0, 5]
     """
+    return bytes(get_byte(tree))
+
+def get_byte(tree):
     
     if tree.is_leaf():
         return []
-    
-    if tree.left.is_leaf():
-        first_byte = 0
-        second_byte = tree.left.symbol
+    if tree.left != None:
+        if tree.left.is_leaf():
+            first_byte = 0
+            second_byte = tree.left.symbol
         
-    else:
-        first_byte = 1
-        second_byte = tree.left.number
+        else:
+            first_byte = 1
+            second_byte = tree.left.number
+
+    if tree.right != None:   
+        if tree.right.is_leaf():
+            third_byte = 0
+            forth_byte = tree.right.symbol
         
-    if tree.right.is_leaf():
-        third_byte = 0
-        forth_byte = tree.right.symbol
-        
-    else:
-        third_byte = 1
-        forth_byte = tree.right.number
+        else:
+            third_byte = 1
+            forth_byte = tree.right.number
         
         
-    return tree_to_bytes(tree.left) + tree_to_bytes(tree.right) + [first_byte, second_byte, third_byte, forth_byte]
+    return get_byte(tree.left) + get_byte(tree.right) + [first_byte, second_byte, third_byte, forth_byte]
+
 
    
 

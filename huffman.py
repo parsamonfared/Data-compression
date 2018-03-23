@@ -216,24 +216,17 @@ def generate_compressed(text, codes):
     ['10111001', '10000000']
     """
     bits = ''
+    byte = []
     for item in text:
         bits += codes[item]
-        
-    byte = []
-    if len(bits) <= 8 :
-        
-        byte.append(bits_to_byte(bits))
-        return byte
-    
-    while len(bits) > 8:
-
-        temp_bits = bits[:8]
-        bits = bits[8:]
-        byte.append(bits_to_byte(temp_bits))
+        if len(bits) >= 8:
+            byte.append(bits_to_byte(bits[:8]))
+            bits = bits[8:]
+            
     if len(bits) != 0:
-
         byte.append(bits_to_byte(bits))
-    return byte
+        
+    return bytes(byte)
     
     
         
@@ -328,10 +321,14 @@ def compress(in_file, out_file):
     tree = huffman_tree(freq)
     codes = get_codes(tree)
     number_nodes(tree)
+    print(tree)
+    print(freq)
     print("Bits per symbol:", avg_length(tree, freq))
     result = (num_nodes_to_bytes(tree) + tree_to_bytes(tree) +
               size_to_bytes(len(text)))
+    print('Tree to bytes problem')
     result += generate_compressed(text, codes)
+    print('Generate_compressed problem')
     with open(out_file, "wb") as f2:
         f2.write(result)
 

@@ -386,7 +386,52 @@ def generate_tree_postorder(node_lst, root_index):
 HuffmanNode(7, None, None)), \
 HuffmanNode(None, HuffmanNode(10, None, None), HuffmanNode(12, None, None)))
     """
-    # todo
+    '''
+    
+    if root.r_type == 1:
+        right_readnode_index = root_index - 1
+        tree.right = generate_tree_general(node_lst, right_readnode_index)
+    '''
+   # return get_height(node_lst, root_index)
+    tree = HuffmanNode()
+    root_node = node_lst[root_index]
+    counter = 0
+    if root_node.r_type == 1:
+        tree.right = generate_tree_general(node_lst, root_index-1)
+        counter = get_height(node_lst, root_index-1)
+    else:
+        tree.right = HuffmanNode(root_node.r_data)
+        
+    if root_node.l_type == 1:
+        tree.left = generate_tree_general(node_lst, root_index - 1 - counter)
+
+    else:
+        tree.left = HuffmanNode(root_node.r_data)
+
+    return tree
+           
+def get_height(node_lst, root_index):
+    '''
+    gets the height of the subtreees 
+    '''
+    height = 0 # the height of the sub 
+    
+    cummulator = 0 # the cumulator 
+    
+    rt_Node = node_lst[root_index]
+    
+
+    if rt_Node.r_type == 1:
+        cummulator = get_height(node_lst, root_index - 1)
+        height += cummulator
+        
+    if rt_Node.l_type == 1:
+        height += get_height(node_lst, root_index - 1 - cummulator)
+
+    return height + 1
+        
+    
+     
 
 
 def generate_uncompressed(tree, text, size):

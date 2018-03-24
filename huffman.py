@@ -90,21 +90,20 @@ def huffman_tree(freq_dict):
     >>> t == result1 or t == result2
     True
     """
-    # sorted the dictionary keys to list l in terms of it's key's values
-    temp = [] #[0] = Frequency, [1] = HuffmanNode w/ Symbol
+    tree_data = [] #[0] = Frequency, [1] = HuffmanNode w/ Symbol
     for key in freq_dict:
-        temp.append([freq_dict[key], HuffmanNode(key)])
-
-   
-    if len(temp) == 1:
-        return HuffmanNode(temp.popitem()[0])
+        tree_data.append([freq_dict[key], HuffmanNode(key)])
+        
+    if len(tree_data) == 1: #Single leaf tree
+        return HuffmanNode(tree_data.popitem()[0])
     
-    while len(temp) > 1:
-        temp = sorted(temp) #List of all of frequencies in the dictionary
-        left = temp.pop(0)
-        right = temp.pop(0)
-        temp.append([left[0] + right[0], HuffmanNode(left = left[1], right = right[1])])
-    return temp[0][1] #Returns the root node of the Huffman tree (all others have been combined)
+    while len(tree_data) > 1:
+        tree_data.sort() #Sorts based on frequency, used to connect two smallest
+        left = tree_data.pop(0)
+        right = tree_data.pop(0)
+        tree_data.append([left[0] + right[0], HuffmanNode(None, left[1], \
+                                                          right[1])])
+    return tree_data[0][1] #Returns the root node of the Huffman tree
                 
 
 def get_codes(tree):
@@ -280,7 +279,8 @@ def get_byte(tree):
             forth_byte = tree.right.number
         
         
-    return get_byte(tree.left) + get_byte(tree.right) + [first_byte, second_byte, third_byte, forth_byte]
+    return get_byte(tree.left) + get_byte(tree.right) + [first_byte, \
+            second_byte, third_byte, forth_byte]
 
 
    
@@ -408,7 +408,7 @@ def generate_uncompressed(tree, text, size):
         binary += byte_to_bits(byte) #Binary rep of current byte
     x = 0
     for i in range(len(binary)):
-        if binary[x:i] in code_to_symbol and size > 0: #Found binary in dictionary
+        if binary[x:i] in code_to_symbol and size > 0: #Found binary in dict
             size -= 1
             original.append(code_to_symbol[binary[x:i]])
             x = i

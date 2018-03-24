@@ -90,21 +90,20 @@ def huffman_tree(freq_dict):
     >>> t == result1 or t == result2
     True
     """
-    # sorted the dictionary keys to list l in terms of it's key's values
-    temp = [] #[0] = Frequency, [1] = HuffmanNode w/ Symbol
+    tree_data = [] #[0] = Frequency, [1] = HuffmanNode w/ Symbol
     for key in freq_dict:
-        temp.append([freq_dict[key], HuffmanNode(key)])
-
-   
-    if len(temp) == 1:
-        return HuffmanNode(temp.popitem()[0])
+        tree_data.append([freq_dict[key], HuffmanNode(key)])
+        
+    if len(tree_data) == 1: #Single leaf tree
+        return HuffmanNode(tree_data.pop(0))
     
-    while len(temp) > 1:
-        temp = sorted(temp) #List of all of frequencies in the dictionary
-        left = temp.pop(0)
-        right = temp.pop(0)
-        temp.append([left[0] + right[0], HuffmanNode(left = left[1], right = right[1])])
-    return temp[0][1] #Returns the root node of the Huffman tree (all others have been combined)
+    while len(tree_data) > 1:
+        tree_data.sort() #Sorts based on frequency, used to connect two smallest
+        left = tree_data.pop(0)
+        right = tree_data.pop(0)
+        tree_data.append([left[0] + right[0], HuffmanNode(None, left[1], \
+                                                          right[1])])
+    return tree_data[0][1] #Returns the root node of the Huffman tree
                 
 
 def get_codes(tree):
@@ -219,7 +218,7 @@ def generate_compressed(text, codes):
     byte = []
     for item in text:
         bits += codes[item]
-        if len(bits) >= 8:
+        while len(bits) >= 8:
             byte.append(bits_to_byte(bits[:8]))
             bits = bits[8:]
             
@@ -279,7 +278,8 @@ def get_byte(tree):
             forth_byte = tree.right.number
         
         
-    return get_byte(tree.left) + get_byte(tree.right) + [first_byte, second_byte, third_byte, forth_byte]
+    return get_byte(tree.left) + get_byte(tree.right) + [first_byte, \
+            second_byte, third_byte, forth_byte]
 
 
    
@@ -442,7 +442,21 @@ def generate_uncompressed(tree, text, size):
     @param int size: number of bytes to decompress from text.
     @rtype: bytes
     """
-    
+    symbol_to_code = get_codes(tree) #Dictionary linking symbols to codes
+    code_to_symbol = {}
+    for key in symbol_to_code: #Creates dictionary linking codes to symbols
+        code_to_symbol[symbol_to_code[key]] = key
+    binary = ''
+    original = []
+    for byte in text:
+        binary += byte_to_bits(byte) #Binary rep of current byte
+    x = 0
+    for i in range(len(binary) + 1):
+        if binary[x:i] in code_to_symbol and size > 0: #Found binary in dict
+            size -= 1
+            original.append(code_to_symbol[binary[x:i]])
+            x = i
+    return bytes(original)
 
 
 def bytes_to_nodes(buf):

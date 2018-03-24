@@ -219,11 +219,12 @@ def generate_compressed(text, codes):
     byte = []
     for item in text:
         bits += codes[item]
-        if len(bits) >= 8:
+        while len(bits) >= 8:
             byte.append(bits_to_byte(bits[:8]))
             bits = bits[8:]
             
     if len(bits) != 0:
+        print(bits)
         byte.append(bits_to_byte(bits))
         
     return bytes(byte)

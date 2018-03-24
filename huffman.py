@@ -471,7 +471,46 @@ def improve_tree(tree, freq_dict):
     >>> avg_length(tree, freq)
     2.31
     """
-    # todo
+    #leafs = get_leaves(tree)
+    
+    temp = tree
+    def swap_symbol(tree, sym1, sym2):
+        '''
+        this function takes in two symbols and a tree swaps the symbols
+        of the two nodes with the given symbols
+        '''
+        if tree.symbol == sym1:
+            tree.symbol = sym2
+            
+        elif tree.symbol == sym2:
+            tree.symbol = sym1
+            
+        if tree.left != None:
+            swap_symbol(tree.left, sym1, sym2)
+            
+        if tree.right != None:
+            swap_symbol(tree.right, sym1, sym2)
+    
+    codes_dict = get_codes(tree)
+    codes = []
+    for symbol in codes_dict:
+        codes.append((symbol, codes_dict[symbol]))
+
+    for i in range(len(codes)-1):
+        
+        largest = i
+        for j in range(i+1, len(codes)):
+              if freq_dict[codes[j][0]] > freq_dict[codes[largest][0]]:
+                  largest = j
+                  
+        if i != largest:
+            temp = codes[i]
+            codes[i] = codes[largest]
+            codes[largest] = temp
+            swap_symbol(tree, codes[i][0], codes[largest][0])
+            
+
+
 
 if __name__ == "__main__":
     # TODO: Uncomment these when you have implemented all the functions

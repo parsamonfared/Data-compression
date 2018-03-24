@@ -405,8 +405,7 @@ def generate_uncompressed(tree, text, size):
     binary = ''
     original = []
     for byte in text:
-        cur_bin = byte_to_bits(byte) #Binary rep of current byte
-        binary += cur_bin
+        binary += byte_to_bits(byte) #Binary rep of current byte
     x = 0
     for i in range(len(binary)):
         if binary[x:i] in code_to_symbol and size > 0: #Found binary in dictionary

@@ -397,7 +397,22 @@ def generate_uncompressed(tree, text, size):
     @param int size: number of bytes to decompress from text.
     @rtype: bytes
     """
-    
+    symbol_to_code = get_codes(tree) #Dictionary linking symbols to codes
+    code_to_symbol = {}
+    for key in symbol_to_code: #Creates dictionary linking codes to symbols
+        code_to_symbol[symbol_to_code[key]] = key
+    binary = ''
+    original = []
+    for byte in text:
+        cur_bin = byte_to_bits(byte) #Binary rep of current byte
+        binary += cur_bin
+    x = 0
+    for i in range(len(binary)):
+        if binary[x:i] in code_to_symbol and size > 0: #Found binary in dictionary
+            size -= 1
+            original.append(code_to_symbol[binary[x:i]])
+            x = i
+    return bytes(original)
 
 
 def bytes_to_nodes(buf):

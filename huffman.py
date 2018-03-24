@@ -95,7 +95,7 @@ def huffman_tree(freq_dict):
         tree_data.append([freq_dict[key], HuffmanNode(key)])
         
     if len(tree_data) == 1: #Single leaf tree
-        return HuffmanNode(tree_data.pop(0))
+        return tree_data.pop(0)[1]
     
     while len(tree_data) > 1:
         tree_data.sort() #Sorts based on frequency, used to connect two smallest

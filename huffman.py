@@ -223,7 +223,6 @@ def generate_compressed(text, codes):
             bits = bits[8:]
             
     if len(bits) != 0:
-        print(bits)
         byte.append(bits_to_byte(bits))
         
     return bytes(byte)

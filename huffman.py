@@ -386,13 +386,6 @@ def generate_tree_postorder(node_lst, root_index):
 HuffmanNode(7, None, None)), \
 HuffmanNode(None, HuffmanNode(10, None, None), HuffmanNode(12, None, None)))
     """
-    '''
-    
-    if root.r_type == 1:
-        right_readnode_index = root_index - 1
-        tree.right = generate_tree_general(node_lst, right_readnode_index)
-    '''
-   # return get_height(node_lst, root_index)
     tree = HuffmanNode()
     root_node = node_lst[root_index]
     counter = 0
